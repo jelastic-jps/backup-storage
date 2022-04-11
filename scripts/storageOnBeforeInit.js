@@ -81,7 +81,8 @@ return {
         "caption": "Environment",
         "type": "envname",
         "name": "envName",
-        "dependsOn": "region"
+        "dependsOn": "region",
+        "required": "true"
       },
       {
         "caption": "Owner",
