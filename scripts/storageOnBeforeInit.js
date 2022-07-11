@@ -5,7 +5,7 @@ var STORAGE_NODE_DISK_LIMITATION = "storage.node.disk.limitation",
 var max = 7, min = 1, resp, name, value, minStorageSize = 5, maxStorageSize ;
 
 var hasCollaboration = (parseInt('${fn.compareEngine(7.0)}', 10) >= 0),
-    q = [];
+    quotas = [];
 
 if (hasCollaboration) {
     quotas = [
@@ -13,8 +13,12 @@ if (hasCollaboration) {
         { quota : { name: SAME_NODES }, value: parseInt('${quota.environment.maxsamenodescount}', 10) },
         { quota : { name: STORAGE_NODE_DISK_LIMITATION }, value: parseInt('${quota.storage.node.disk.limitation}', 10) }
     ];
+    group = { groupType: '${account.groupType}' };
 } else {
-    quotas = jelastic.billing.account.GetQuotas(STORAGE_NODE_DISK_LIMITATION + ";" + SAME_NODES + ";" + MAX_NODES).array || [];
+    quotas.push(jelastic.billing.account.GetQuotas(STORAGE_NODE_DISK_LIMITATION).array[0]);
+    quotas.push(jelastic.billing.account.GetQuotas(SAME_NODES).array[0]);
+    quotas.push(jelastic.billing.account.GetQuotas(MAX_NODES).array[0]);
+    group = jelastic.billing.account.GetAccount(appid, session);
 }
 
 for (var i = 0, n = quotas.length; i < n; i++) {
@@ -30,7 +34,6 @@ for (var i = 0, n = quotas.length; i < n; i++) {
 
 return {
   "result": 0,
-  "settings": {
     "fields": [
       {
         "type": "radio-fieldset",
@@ -90,5 +93,4 @@ return {
         "name": "owner"
       }
     ]
-  }
 };

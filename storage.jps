@@ -1,5 +1,5 @@
 type: install	
-jpsVersion: 7.1.1	
+jpsVersion: 6.1.1
 name: Backup Storage	
 id: wp-restore
 targetEditions: any
@@ -11,22 +11,30 @@ baseUrl: https://raw.githubusercontent.com/jelastic-jps/backup-storage/main
 categories:
   - wordpress/extra
 
-onBeforeInit: scripts/storageOnBeforeInit.js
+settings:
+  onBeforeInit: scripts/onBeforeInit.js
+  
+onBeforeInstall: |
+  var clusterEnabled = false;
+  if ("${settings.clusteredStorage}" == "true") {
+    clusterEnabled = true;
+  }
+  return {result:0, "nodes":[{"count":"${settings.storageNodesCount:1}","nodeGroup":"storage","nodeType":"storage", "diskLimit": "${settings.storageNodesSize:10}","cluster": clusterEnabled}]};
+
+nodes: definedInOnBeforeInstall
 
 onInstall: 
   - setupServer
+  
+onAfterRedeployContainer[storage]:
+  - installUtils
 
 actions:
   setupServer:
-    - install: 
-        jps: ${baseUrl}/storage-topology.jps
-        envName: ${settings.envName}
-        displayName: WP Backup Storage Server
-        region: ${settings.regions}
-        settings: 
-          clusteredStorage: ${settings.clustered}
-          storageNodesCount: ${settings.storageNodesCount:1}
-          storageNodesSize: ${settings.storageSize}
+    - installUtils
+    - api: env.control.SetNodeGroupDisplayName
+      nodeGroup: storage
+      displayName: "WordPress backup storage"
     - script: |
         storageEnvGroups = eval('(' + MANIFEST + ')').envGroups;
         if (!Array.isArray(storageEnvGroups)) {
@@ -38,7 +46,16 @@ actions:
         }
         storageEnvGroups.push('WP Backup');
         return jelastic.env.control.AttachEnvGroup({
-          envName    : '${settings.envName}',
+          envName    : '${env.name}',
           session  : session,
           envGroups: storageEnvGroups
         });
+        
+  installUtils:
+    - cmd [storage]: |-
+        yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
+        yum-config-manager --enable copr:copr.fedorainfracloud.org:copart:restic
+        yum -y install restic
+        yum-config-manager --disable copr:copr.fedorainfracloud.org:copart:restic
+        wget -O /root/getBackups.sh ${baseUrl}/scripts/getBackups.sh; chmod +x /root/getBackups.sh;
+      user: root
