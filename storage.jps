@@ -5,9 +5,10 @@ id: wp-restore
 targetEditions: any
 logo: /images/backup-logo.svg	
 description: |
-  Create a centralized storage repository for backups of the filesystem and the database. It can be as a single node or multi-node fault-tolerant scalable GlusterFS cluster. Backup storage can keep multiple backups of numerous containers created under a single account using the Restic software. Storage works in tandem with backup add-ons integrated into prepackaged applications. Currently supported applications:
-  - WordPress
+  Create a centralized storage repository for backups of the filesystem and the database. It can be as a single node or multi-node fault-tolerant scalable GlusterFS cluster. Backup storage can keep multiple backups of numerous containers created under a single account using the Restic software. Storage works in tandem with backup add-ons integrated into prepackaged applications.
 baseUrl: https://raw.githubusercontent.com/jelastic-jps/backup-storage/main
+categories:
+  - apps/file-manager
 
 settings:
   onBeforeInit: scripts/onBeforeInit.js
