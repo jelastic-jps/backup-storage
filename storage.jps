@@ -9,6 +9,7 @@ description: |
 baseUrl: https://raw.githubusercontent.com/jelastic-jps/backup-storage/main
 categories:
   - apps/file-manager
+  - wordpress
 
 settings:
   onBeforeInit: scripts/onBeforeInit.js
