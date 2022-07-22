@@ -16,7 +16,7 @@ settings:
   
 onBeforeInstall: |
   var clusterEnabled = false;
-  if ("${settings.clusteredStorage}" == "true") {
+  if ("${settings.clustered}" == "true") {
     clusterEnabled = true;
   }
   return {result:0, "nodes":[{"count":"${settings.storageNodesCount:1}","nodeGroup":"storage","nodeType":"storage", "diskLimit": "${settings.storageNodesSize:10}","cluster": clusterEnabled}]};
