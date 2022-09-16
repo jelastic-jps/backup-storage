@@ -58,4 +58,5 @@ actions:
         yum -y install restic
         yum-config-manager --disable copr:copr.fedorainfracloud.org:copart:restic
         wget -O /root/getBackups.sh ${baseUrl}/scripts/getBackups.sh; chmod +x /root/getBackups.sh;
+        wget -O /root/getBackupsAllEnvs.sh ${baseUrl}/scripts/getBackupsAllEnvs.sh; chmod +x /root/getBackupsAllEnvs.sh;
       user: root
