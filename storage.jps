@@ -44,7 +44,7 @@ actions:
                 storageEnvGroups.push(storageEnvGroupsString);
             }
         }
-        storageEnvGroups.push('WP Backup');
+        storageEnvGroups.push('Backup storage nodes');
         return jelastic.env.control.AttachEnvGroup({
           envName    : '${env.name}',
           session  : session,
