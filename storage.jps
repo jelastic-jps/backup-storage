@@ -34,7 +34,7 @@ actions:
     - installUtils
     - api: env.control.SetNodeGroupDisplayName
       nodeGroup: storage
-      displayName: "WordPress backup storage"
+      displayName: "Backup storage"
     - script: |
         storageEnvGroups = eval('(' + MANIFEST + ')').envGroups;
         if (!Array.isArray(storageEnvGroups)) {
