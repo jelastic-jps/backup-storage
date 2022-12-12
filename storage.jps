@@ -64,7 +64,7 @@ actions:
 
   addMetadata:
     script: |
-      var metadata = { project: "${settings.project:default}", projectScope: "${settings.projectScope:production}" };
+      var metadata = { project: "${settings.project:default}", projectScope: "${settings.projectScope:backup}" };
       return api.env.control.ApplyEnvProperty ?
         api.env.control.ApplyEnvProperty('${env.name}', session, metadata) :
         api.env.control.ApplyNodeGroupData('${env.name}', session, 'storage', metadata);
