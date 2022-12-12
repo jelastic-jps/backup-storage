@@ -24,6 +24,7 @@ onBeforeInstall: |
 nodes: definedInOnBeforeInstall
 
 onInstall: 
+  - addMetadata
   - setupServer
   
 onAfterRedeployContainer[storage]:
@@ -60,3 +61,10 @@ actions:
         wget -O /root/getBackups.sh ${baseUrl}/scripts/getBackups.sh; chmod +x /root/getBackups.sh;
         wget -O /root/getBackupsAllEnvs.sh ${baseUrl}/scripts/getBackupsAllEnvs.sh; chmod +x /root/getBackupsAllEnvs.sh;
       user: root
+
+  addMetadata:
+    script: |
+      var metadata = { project: "${settings.project:default}", projectScope: "${settings.projectScope:production}" };
+      return api.env.control.ApplyEnvProperty ?
+        api.env.control.ApplyEnvProperty('${env.name}', session, metadata) :
+        api.env.control.ApplyNodeGroupData('${env.name}', session, 'cp', metadata);
