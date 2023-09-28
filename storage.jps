@@ -63,8 +63,8 @@ actions:
   installUtils:
     - cmd [storage]: |-
         if which dnf; then
-            dnf install epel-release
-            dnf install restic
+            dnf install -y epel-release
+            dnf install -y restic
         else
             yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
             yum-config-manager --enable copr:copr.fedorainfracloud.org:copart:restic
