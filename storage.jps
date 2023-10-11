@@ -1,6 +1,7 @@
 type: install	
 jpsVersion: 6.1.1
-name: Backup Storage	
+name: Backup Storage
+targetEditions: any
 id: wp-restore
 logo: /images/backup-logo.svg	
 description: |
