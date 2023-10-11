@@ -19,18 +19,6 @@ onBeforeInstall: |
 
 nodes: definedInOnBeforeInstall
 
-mixins:
- - /scripts/common.yml
-
-onApplySubscriptionSettings:
-  marketplace.installation.ExecuteAction:
-    appUniqueName: ${globals.installationId}
-    action: applyEnvSettings
-    settings:
-      targetAppid: ${event.params.targetAppid}
-      cloudlets: ${event.params.settings.cloudlets}
-      diskspace: ${event.params.settings.diskspace}000
-
 onInstall: 
   - addMetadata
   - setupServer
