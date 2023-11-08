@@ -19,6 +19,9 @@ onBeforeInstall: |
 
 nodes: definedInOnBeforeInstall
 
+mixins:
+ - /scripts/common.yml
+
 onInstall: 
   - addMetadata
   - setupServer
