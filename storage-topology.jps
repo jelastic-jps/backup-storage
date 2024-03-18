@@ -23,9 +23,6 @@ onAfterRedeployContainer[storage]:
 actions:
   installUtils:
     - cmd [storage]: |-
-        yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo && \
-        yum-config-manager --enable copr:copr.fedorainfracloud.org:copart:restic && \
-        yum -y install restic && \
-        yum-config-manager --disable copr:copr.fedorainfracloud.org:copart:restic && \
-        wget -O /root/getBackups.sh ${baseUrl}/scripts/getBackups.sh && chmod +x /root/getBackups.sh;
+          wget -O /usr/sbin/installUpdateRestic ${baseUrl}/scripts/installUpdateRestic && \
+          chmod +x /usr/sbin/installUpdateRestic && /usr/sbin/installUpdateRestic
       user: root

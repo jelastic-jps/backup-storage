@@ -15,7 +15,11 @@ settings:
   onBeforeInit: scripts/createOnBeforeInit.js
   
 onBeforeInstall: |
-  return {result:0, "nodes":[{"count":"${settings.storageNodesCount:1}","nodeGroup":"storage","nodeType":"storage", "cloudlets": "${settings.cloudlets:6}", "diskLimit": "${settings.diskspace:10}","cluster": "${settings.clustered:false}"}]};
+  var clusterEnabled = false;
+  if ("${settings.clustered}" == "true") {
+    clusterEnabled = true;
+  }
+  return {result:0, "nodes":[{"count":"${settings.storageNodesCount:1}","nodeGroup":"storage","nodeType":"storage", "cloudlets": "${settings.cloudlets:6}", "diskLimit": "${settings.diskspace:10}","cluster": clusterEnabled}]};
 
 nodes: definedInOnBeforeInstall
 
@@ -53,15 +57,8 @@ actions:
         
   installUtils:
     - cmd [storage]: |-
-        if which dnf; then
-            dnf install -y epel-release
-            dnf install -y restic
-        else
-            yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/copart/restic/repo/epel-7/copart-restic-epel-7.repo
-            yum-config-manager --enable copr:copr.fedorainfracloud.org:copart:restic
-            yum -y install restic
-            yum-config-manager --disable copr:copr.fedorainfracloud.org:copart:restic
-        fi 
+        wget -O /usr/sbin/installUpdateRestic ${baseUrl}/scripts/installUpdateRestic && \
+        chmod +x /usr/sbin/installUpdateRestic && /usr/sbin/installUpdateRestic
         wget -O /root/getBackups.sh ${baseUrl}/scripts/getBackups.sh; chmod +x /root/getBackups.sh;
         wget -O /root/getBackupsAllEnvs.sh ${baseUrl}/scripts/getBackupsAllEnvs.sh; chmod +x /root/getBackupsAllEnvs.sh;
       user: root
