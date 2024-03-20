@@ -1,7 +1,5 @@
 #!/bin/bash
 
-restic self-update || true;
-
 ENV_LIST=$(ls -Qm /data)
 
 OUTPUT_JSON="{\"result\": 0, \"envs\": [${ENV_LIST}], \"backups\": {"
