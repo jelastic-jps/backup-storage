@@ -1,5 +1,7 @@
 #!/bin/bash
 
+restic self-update &>/dev/null || true
+
 if [ $# -eq 0 ]; then
     ENV_LIST=$(ls -Qm /data);
     OUTPUT_JSON="{\"result\": 0, \"envs\": [${ENV_LIST}"
